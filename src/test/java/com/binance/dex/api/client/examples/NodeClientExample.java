@@ -28,7 +28,7 @@ public class NodeClientExample {
 
     @Before
     public void setup() {
-        binanceDexNodeApi = BinanceDexApiClientFactory.newInstance().newNodeRpcClient(BinanceDexEnvironment.TEST_NET.getNodeUrl(),BinanceDexEnvironment.TEST_NET.getHrp(), BinanceDexEnvironment.TEST_NET.getValHrp());
+        binanceDexNodeApi = BinanceDexApiClientFactory.newInstance().newNodeRpcClient(BinanceDexEnvironment.TEST_NET.getNodeUrl(), null, BinanceDexEnvironment.TEST_NET.getHrp(), BinanceDexEnvironment.TEST_NET.getValHrp());
     }
 
     @Test
@@ -39,7 +39,7 @@ public class NodeClientExample {
     }
 
     @Test
-    public void testCommittedAccount(){
+    public void testCommittedAccount() {
         String address = "tbnb16hywxpvvkaz6cecjz89mf2w0da3vfeg6z6yky2";
         Account account = binanceDexNodeApi.getCommittedAccount(address);
         Assert.assertEquals(address, account.getAddress());
@@ -253,17 +253,17 @@ public class NodeClientExample {
     }
 
     @Test
-    public void testGetTokenInfoBySymbol(){
+    public void testGetTokenInfoBySymbol() {
         Token token = binanceDexNodeApi.getTokenInfoBySymbol("BNB");
         Assert.assertNotNull(token);
-        Assert.assertEquals("BNB",token.getSymbol());
+        Assert.assertEquals("BNB", token.getSymbol());
     }
 
     @Test
-    public void testGetMiniTokenInfoBySymbol(){
+    public void testGetMiniTokenInfoBySymbol() {
         MiniToken token = binanceDexNodeApi.getMiniTokenInfoBySymbol("TTT-873M");
         Assert.assertNotNull(token);
-        Assert.assertEquals("TTT-873M",token.getSymbol());
+        Assert.assertEquals("TTT-873M", token.getSymbol());
     }
 
     @Test
@@ -281,14 +281,14 @@ public class NodeClientExample {
     }
 
     @Test
-    public void testGetProposalById(){
+    public void testGetProposalById() {
         Proposal proposal = binanceDexNodeApi.getProposalById("1");
-        Assert.assertEquals("1",proposal.getValue().getProposalId());
+        Assert.assertEquals("1", proposal.getValue().getProposalId());
     }
 
     @Test
-    public void testGetSideProposalById(){
+    public void testGetSideProposalById() {
         Proposal proposal = binanceDexNodeApi.getSideProposalById("4", "rialto");
-        Assert.assertEquals("4",proposal.getValue().getProposalId());
+        Assert.assertEquals("4", proposal.getValue().getProposalId());
     }
 }

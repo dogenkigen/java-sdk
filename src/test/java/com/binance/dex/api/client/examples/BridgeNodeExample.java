@@ -39,7 +39,7 @@ public class BridgeNodeExample {
 
     @Before
     public void setup() throws IOException {
-        nodeClient = BinanceDexApiClientFactory.newInstance().newNodeRpcClient("http://dex-qa-s1-bsc-dev-validator-alb-501442930.ap-northeast-1.elb.amazonaws.com:27147",BinanceDexEnvironment.TEST_NET.getHrp(), BinanceDexEnvironment.TEST_NET.getValHrp());
+        nodeClient = BinanceDexApiClientFactory.newInstance().newNodeRpcClient("http://dex-qa-s1-bsc-dev-validator-alb-501442930.ap-northeast-1.elb.amazonaws.com:27147", null,BinanceDexEnvironment.TEST_NET.getHrp(), BinanceDexEnvironment.TEST_NET.getValHrp());
         String mnemonic = "ten spring excite fluid pizza amused goat equal language cinnamon change drive alien second table onion obscure culture void science renew scrub capable wet";
         wallet = Wallet.createWalletFromMnemonicCode(Arrays.asList(mnemonic.split(" ")), BinanceDexEnvironment.TEST_NET);
     }

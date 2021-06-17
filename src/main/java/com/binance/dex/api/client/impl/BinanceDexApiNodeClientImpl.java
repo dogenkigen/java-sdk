@@ -59,8 +59,8 @@ public class BinanceDexApiNodeClientImpl implements BinanceDexApiNodeClient {
 
     private final NodeQueryDelegateOracle oracleQueryDelegate;
 
-    public BinanceDexApiNodeClientImpl(String nodeUrl, String hrp, String valHrp) {
-        this.binanceDexNodeApi = BinanceDexApiClientGenerator.createService(BinanceDexNodeApi.class, nodeUrl);
+    public BinanceDexApiNodeClientImpl(String nodeUrl, String proxy, String hrp, String valHrp) {
+        this.binanceDexNodeApi = BinanceDexApiClientGenerator.createServiceWithProxy(BinanceDexNodeApi.class, nodeUrl, proxy);
         this.hrp = hrp;
         this.valHrp = valHrp;
         transactionConverter = new TransactionConverter(hrp, valHrp);

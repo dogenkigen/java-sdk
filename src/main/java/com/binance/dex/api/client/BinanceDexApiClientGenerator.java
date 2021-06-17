@@ -16,6 +16,8 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 public class BinanceDexApiClientGenerator {
@@ -28,14 +30,42 @@ public class BinanceDexApiClientGenerator {
                     BinanceDexApiError.class, new Annotation[0], null);
 
     private static OkHttpClient sharedClient;
+
     static {
         Dispatcher dispatcher = new Dispatcher();
         dispatcher.setMaxRequestsPerHost(500);
         dispatcher.setMaxRequests(500);
         sharedClient = new OkHttpClient.Builder()
-            .dispatcher(dispatcher)
-            .pingInterval(20, TimeUnit.SECONDS)
-            .build();
+                .dispatcher(dispatcher)
+                .pingInterval(20, TimeUnit.SECONDS)
+                .build();
+    }
+
+
+    public static <S> S createServiceWithProxy(Class<S> serviceClass, String baseUrl, String proxyAddr) {
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(converterFactory);
+
+        if (proxyAddr != null) {
+            String[] proxyAddrSplit = proxyAddr.split(":");
+            java.net.Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyAddrSplit[0], Integer.parseInt(proxyAddrSplit[1])));
+            Dispatcher dispatcher = new Dispatcher();
+            dispatcher.setMaxRequestsPerHost(500);
+            dispatcher.setMaxRequests(500);
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .proxy(proxy)
+                    .dispatcher(dispatcher)
+                    .pingInterval(20, TimeUnit.SECONDS)
+                    .build();
+            retrofitBuilder.client(client);
+        } else {
+            retrofitBuilder.client(sharedClient);
+        }
+
+        Retrofit retrofit = retrofitBuilder.build();
+
+        return retrofit.create(serviceClass);
     }
 
     public static <S> S createService(Class<S> serviceClass, String baseUrl) {
@@ -109,4 +139,5 @@ public class BinanceDexApiClientGenerator {
     public static void addInterceptor(Interceptor interceptor) {
         sharedClient = sharedClient.newBuilder().addInterceptor(interceptor).build();
     }
+
 }
